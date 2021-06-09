@@ -36,21 +36,27 @@ export default function Morse(props: IProps) {
 
   const [isDown, setIsDown] = useState(false);
 
-  const keyDown = (e: KeyboardEvent) => {
+  const keyDown = (e: KeyboardEvent | TouchEvent) => {
+    e.preventDefault();
     setIsDown(true);
   }
 
-  const keyUp = (e: KeyboardEvent) => {
+  const keyUp = (e: KeyboardEvent | TouchEvent) => {
+    e.preventDefault();
     setIsDown(false);
   }
 
   useEffect(() => {
     window.addEventListener("keydown", keyDown);
-    window.addEventListener("keyup", keyUp)
+    window.addEventListener("keyup", keyUp);
+    window.addEventListener("touchstart", keyDown);
+    window.addEventListener("touchend", keyUp);
 
     return () => {
       window.removeEventListener("keydown", keyDown);
       window.removeEventListener("keydown", keyUp);
+      window.removeEventListener("touchstart", keyDown);
+      window.removeEventListener("touchend", keyUp);
     }
   }, []);
 
